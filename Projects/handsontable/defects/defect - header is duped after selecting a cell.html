@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://handsontable.com/dist/handsontable.full.min.js"></script>
+        <link rel="stylesheet" media="screen" href="https://handsontable.com/dist/handsontable.full.min.css">
+    </head>
+
+
+    <body>
+        <div id="TableID"></div>
+
+        <script>
+            function CreateTable(data) {
+                var container = document.getElementById('TableID');
+                window.FullTable = new Handsontable(container, {
+                    data: data,
+                    colHeaders: true,
+                });
+            }
+
+            var myArray = [];
+            for (var i = 0; i < 200; ++i)
+                myArray.push(['A', 1]);
+            CreateTable(myArray);
+
+        </script>
+    </body>
+</html>
