@@ -7,7 +7,7 @@ select *
     left join laptimes l on l.raceId = r.raceId 
 		AND l.driverId = r.driverId
         AND l.lap = 1
-	where races.year > 1996
+	where races.year >= 1996
 		AND r.laps > 0 	
         AND isnull(l.position)
 	order by races.date;
@@ -50,7 +50,7 @@ select *
 			join drivers d on d.driverId = r.driverId
 			left join laptimes l on l.raceId = r.raceId
 				AND l.driverId = r.driverId
-			where races.year > 1996 
+			where races.year >= 1996 
 			order by races.date
 		) query1
 		group by driverId, raceId
