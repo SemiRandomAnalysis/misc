@@ -1,4 +1,4 @@
-# Is missing 1st lap laptimes (quick test to see if something's missing)
+# results.laps says the driver had at least 1 lap, but the driver's first lap laptime doesn't exist
 
 select *
 	from races
@@ -12,23 +12,26 @@ select *
         AND isnull(l.position)
 	order by races.date;
 
-# Check if a laptime record for the driver's recorded laps lap exists
+# Check if a laptime record for the driver's total laps in the results table exists
 select *
 	from races
     join results r on r.raceId = races.raceId
     join drivers d on d.driverId = r.driverId
     left join laptimes l on l.raceId = r.raceId
 		AND l.driverId = r.driverId
-        AND l.lap = r.laps
+        AND l.lap = r.laps  # This is the main check
 	where races.year > 1996 
 		AND r.laps > 0
         AND isnull(l.position)
 	order by races.date;
 
-# check if the # of laptime records in a race for a driver matches his completed laps count
+# The number of laptime records does not match the driver's results.laps value
 select *
 	from (
-	select *,
+	select year, date, name, raceId, driverId, driverRef, grid, 
+		sum(if(lap = 1, laptime_position,null)) as position_2nd,
+        position as position_final,
+        laps,
 		sum(if(isnull(laptime_position),0,1)) as laptime_records,
 		laps - sum(if(isnull(laptime_position),0,1)) as delta_in_laptime_records_vs_laps
 	   
@@ -43,7 +46,8 @@ select *
 			   r.position as position,
 	#           l.lap as laptime_lap,
 			   l.position as laptime_position,
-			   r.laps
+			   r.laps,
+               l.lap
 			   
 			from races
 			join results r on r.raceId = races.raceId
