@@ -20,7 +20,7 @@ select *
     left join laptimes l on l.raceId = r.raceId
 		AND l.driverId = r.driverId
         AND l.lap = r.laps  # This is the main check
-	where races.year > 1996 
+	where races.year >= 1996 
 		AND r.laps > 0
         AND isnull(l.position)
 	order by races.date;
